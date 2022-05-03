@@ -2,5 +2,12 @@
 Online Multiplayer Game with Websockets
 
 # Authors: 
-Georg Rohrhofer 
-Marcel Schock
+## Georg Rohrhofer 
+```
+https://github.com/GeorgRohrhofer
+```
+
+## Marcel Schock
+```
+https://github.com/Schock1
+```
