@@ -30,9 +30,44 @@ setInterval(function(){
 var players = {};
 io.on('connection', function(socket){
     socket.on('new player', function(){
+        result = Math.floor(Math.random()*10);
+        switch(result){
+            case 0:
+                col = 'darkgreen';
+                break;
+            case 1:
+                col = 'white';
+                break;
+            case 2:
+                col = 'beige';
+                break;
+            case 3:
+                col = 'darkblue';
+                break;   
+            case 4:
+                col = 'blue';
+                break;
+            case 5:
+                col = 'lightblue';
+                break;
+            case 6:
+                col = 'red';
+                break;
+            case 7:
+                col = 'pink';
+                break; 
+            case 8:
+                col = 'black';
+                break;
+            case 9:
+                col = 'grey';
+                break;
+        }
+
         players[socket.id] = {
             x : 300,
-            y : 300
+            y : 300,
+            color: col
         };
     });
     socket.on('movement', function(data){

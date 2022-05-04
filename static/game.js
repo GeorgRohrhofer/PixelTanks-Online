@@ -10,6 +10,12 @@ var movement = {
     right: false
 }
 
+var cr = 'rgb('+
+      Math.floor(Math.random()*256)+','+
+      Math.floor(Math.random()*256)+','+
+      Math.floor(Math.random()*256)+')';
+
+
 document.addEventListener('keydown', function(event){
     switch(event.keyCode){
         case 65:
@@ -53,13 +59,14 @@ var canvas = document.getElementById('canvas');
 canvas.width = 800;
 canvas.height = 600;
 var context = canvas.getContext('2d');
+
 socket.on('state', function(players){
     context.clearRect(0, 0, 800, 600);
-  context.fillStyle = 'green';
-  for (var id in players) {
-    var player = players[id];
-    context.beginPath();
-    context.rect(player.x, player.y, 40, 30);
-    context.fill();
-  }
+    for (var id in players) {
+        var player = players[id];
+        context.fillStyle = player.color;
+        context.beginPath();
+        context.rect(player.x, player.y, 40, 30);
+        context.fill();
+    }
 });
