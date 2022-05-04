@@ -6,11 +6,13 @@ var socketIO = require('socket.io');
 var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
+var playername = "";
 
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
 
-app.get('/', function(request, response){
+app.get('/:Name', function(request, response){
+    playername = request.params.Name;
     response.sendFile(path.join(__dirname, 'index.html'));
 })
 
@@ -67,7 +69,10 @@ io.on('connection', function(socket){
         players[socket.id] = {
             x : 300,
             y : 300,
-            color: col
+            color: col,
+            name: playername,
+            canonx: 300,
+            canony: 300
         };
     });
     socket.on('movement', function(data){
@@ -83,6 +88,19 @@ io.on('connection', function(socket){
         }
         if(data.down){
             player.y += 5;
+        }
+
+        if(data.canonleft){
+            player.canonx -= 5;
+        }
+        if(data.canonup){
+            player.canony -= 5;
+        }
+        if(data.canonright){
+            player.canonx += 5;
+        }
+        if(data.canondown){
+            player.canony += 5;
         }
     });
 });
