@@ -12,6 +12,11 @@ var playername = "";
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
 
+app.get('/', function(request, response){
+    response.sendFile(path.join(__dirname, 'lobby.html'));
+})
+
+
 app.get('/join/:Name', function(request, response){
     if(request.params.Name != "favicon.ico")
         playername = request.params.Name;
@@ -106,8 +111,6 @@ io.on('connection', function(socket){
     io.on('disconnect', function(){
         delete players[socket.id];
     });
-
-    io.
 });
 
 
