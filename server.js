@@ -8,6 +8,7 @@ var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
 var playername = "";
+var cooldown = 0;
 
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
@@ -72,7 +73,8 @@ io.on('connection', function(socket){
             color: col,
             name: playername,
             canonx: 300,
-            canony: 300
+            canony: 300,
+            fire: false
         };
     });
     socket.on('movement', function(data){
@@ -102,12 +104,19 @@ io.on('connection', function(socket){
         if(data.canondown){
             player.canony += 5;
         }
+
+        if(data.shooting == true){
+            player.fire = true;
+        }
+        if(data.shooting == false){
+            player.fire = false;
+        }
     });
     io.on('disconnect', function(){
         delete players[socket.id];
     });
 
-    io.
+    
 });
 
 

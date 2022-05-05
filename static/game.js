@@ -11,7 +11,8 @@ var movement = {
     canonup: false,
     canondown: false,
     canonleft: false,
-    canonright: false
+    canonright: false,
+    shooting: false,
 }
 
 var cr = 'rgb('+
@@ -50,6 +51,9 @@ document.addEventListener('keydown', function(event){
         case "ArrowDown":
             movement.canondown = true;
             break;
+        case " ":
+            movement.shooting = true;
+            break;
     }
 });
 
@@ -78,6 +82,9 @@ document.addEventListener('keyup', function(event){
             break;
         case "ArrowDown":
             movement.canondown = false;
+            break;
+        case " ":
+            movement.shooting = false;
             break;
     }
 });
@@ -116,6 +123,17 @@ socket.on('state', function(players){
         context.rect(player.canonx + 40, player.canony -5, 10, 10);
         context.rect(player.canonx - 50, player.canony -5, 10, 10);
         context.fill();
+
+        context.beginPath();
+        if(player.fire){
+            context.fillStyle = "orange";
+            context.arc(player.canonx, player.canony, 10,0,2*Math.PI);
+            context.fill();
+            context.fillStyle = player.color;
+            console.log("BOOM");
+        }
+        
+        movement.shooting = false;
 
         context.fillStyle = 'White';
         context.font = "20px Georgia";
