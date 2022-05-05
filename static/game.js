@@ -19,9 +19,12 @@ var cr = 'rgb('+
       Math.floor(Math.random()*256)+','+
       Math.floor(Math.random()*256)+')';
 
+document.addEventListener('close', function(event){
+    socket.emit('disconnect');
+});
 
 document.addEventListener('keydown', function(event){
-    console.log(event.key);
+    //console.log(event.key);
     switch(event.key){
         case "a":
             movement.left = true;
@@ -89,7 +92,10 @@ canvas.width = 800;
 canvas.height = 600;
 var context = canvas.getContext('2d');
 
+var count = document.getElementById('Players');
+
 socket.on('state', function(players){
+    count.innerHTML = Object.keys(players).length;
     context.clearRect(0, 0, 800, 600);
     for (var id in players) {
         var player = players[id];
@@ -98,9 +104,9 @@ socket.on('state', function(players){
         context.rect(player.x, player.y, 80, 60);
         context.fill();
 
-        context.fillStyle = "red";
+        context.fillStyle = player.color;
         context.lineWidth = 5;
-        context.strokeStyle = "red";
+        context.strokeStyle = player.color;
         context.beginPath();
         context.arc(player.canonx, player.canony, 50, 0, 2*Math.PI);
         context.stroke();

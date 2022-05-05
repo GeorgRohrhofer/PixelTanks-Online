@@ -2,6 +2,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var socketIO = require('socket.io');
+const { isBooleanObject } = require('util/types');
 
 var app = express();
 var server = http.Server(app);
@@ -11,8 +12,10 @@ var playername = "";
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
 
-app.get('/:Name', function(request, response){
-    playername = request.params.Name;
+app.get('/join/:Name', function(request, response){
+    if(request.params.Name != "favicon.ico")
+        playername = request.params.Name;
+    console.log(request.params.Name);
     response.sendFile(path.join(__dirname, 'index.html'));
 })
 
@@ -20,9 +23,6 @@ server.listen(5000, function(){
     console.log('Starting server on Port 5000');
 });
 
-io.on('connection', function(socket){
-
-});
 /*
 setInterval(function(){
     io.sockets.emit('message', 'hi');
@@ -103,7 +103,14 @@ io.on('connection', function(socket){
             player.canony += 5;
         }
     });
+    io.on('disconnect', function(){
+        delete players[socket.id];
+    });
+
+    io.
 });
+
+
 
 setInterval(function(){
     io.sockets.emit('state', players);
