@@ -2,7 +2,6 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var socketIO = require('socket.io');
-const { isBooleanObject } = require('util/types');
 
 var app = express();
 var server = http.Server(app);
