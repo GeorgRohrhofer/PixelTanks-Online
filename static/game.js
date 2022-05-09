@@ -95,15 +95,12 @@ setInterval(function() {
 }, 1000 / 60);
 
 var canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 1920;
+canvas.height = 1080;
 var context = canvas.getContext('2d');
 
-var count = document.getElementById('Players');
-
 socket.on('state', function(players){
-    count.innerHTML = Object.keys(players).length;
-    context.clearRect(0, 0, 800, 600);
+    context.clearRect(0, 0, 1920, 1080);
     for (var id in players) {
         var player = players[id];
         context.fillStyle = player.color;
