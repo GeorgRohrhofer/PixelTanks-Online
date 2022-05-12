@@ -78,22 +78,27 @@ io.on('connection', function(socket){
             name: playername,
             canonx: 300,
             canony: 300,
-            fire: false
+            fire: false,
+            points : 0
         };
     });
     socket.on('movement', function(data){
         var player = players[socket.id] || {};
         if(data.left){
-            player.x -= 5;
+            if(player.x > 0)
+                player.x -= 5;
         }
         if(data.up){
-            player.y -= 5;
+            if(player.y > 0)
+                player.y -= 5;
         }
         if(data.right){
-            player.x += 5;
+            if(player.x < 1840)
+                player.x += 5;
         }
         if(data.down){
-            player.y += 5;
+            if(player.y < 1020)
+                player.y += 5;
         }
 
         if(data.canonleft){
