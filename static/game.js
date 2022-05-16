@@ -103,7 +103,7 @@ socket.on('state', function(players){
     var div = document.getElementById('Leaderboard');
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
-    players.array.sort((a, b) => (a.points > b.points), 1 );
+    //players.array.sort((a, b) => (a.points > b.points), 1 );
     for (var id in players) {
         var player = players[id];
         context.fillStyle = player.color;
