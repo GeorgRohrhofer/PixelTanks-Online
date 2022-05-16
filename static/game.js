@@ -103,7 +103,15 @@ socket.on('state', function(players){
     var div = document.getElementById('Leaderboard');
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
-    players.array.sort((a, b) => (a.points > b.points), 1 );
+
+    if (players == null){
+        console.log('HE Behinderter! Es geht scho wieder nix... Floschn.');
+        players?.sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+    } else {
+        console.log('Ui, hast du auch mal was hinbekommen? Aso Nein, das war - mal wieder - Leistung vom Georg');
+        players?.sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+    }
+
     for (var id in players) {
         var player = players[id];
         context.fillStyle = player.color;
@@ -138,8 +146,9 @@ socket.on('state', function(players){
         context.fillStyle = 'White';
         context.font = "20px Georgia";
         context.fillText(player.name, player.x, player.y+80);
+
         var li = document.createElement('li');
-        li.appendChild(document.createTextNode(player.name + ": " + player.points));
+        li.appendChild(document.createTextNode(player.name + " - " + player.points));
 
         div.appendChild(li);
                     
