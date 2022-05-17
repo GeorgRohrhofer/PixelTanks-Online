@@ -79,7 +79,8 @@ io.on('connection', function(socket){
             canonx: 300,
             canony: 300,
             fire: false,
-            points : 0
+            points : 0,
+            image: "tank_red.png"
         };
     });
     socket.on('movement', function(data){
@@ -124,6 +125,16 @@ io.on('connection', function(socket){
     io.on('disconnect', function(){
         delete players[socket.id];
     });
+
+    io.on('hit', function(playerid){
+        players[playerid].points += 1;
+        console.log(players[playerid].points);
+    })
+
+    io.on('got_hit', function(playerid){
+        players[playerid].points = 0;
+        console.log(players[playerid].points);
+    })
 });
 
 

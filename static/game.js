@@ -104,21 +104,16 @@ socket.on('state', function(players){
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
 
-    if (players == null){
-        console.log('HE Behinderter! Es geht scho wieder nix... Floschn.');
-        players?.sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
-    } else {
-        console.log('Ui, hast du auch mal was hinbekommen? Aso Nein, das war - mal wieder - Leistung vom Georg');
-        players?.sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
-    }
+    [].slice.call(players).sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+
 
     for (var id in players) {
         var player = players[id];
         context.fillStyle = player.color;
         context.beginPath();
+        //context.drawImage(player.image, player.x, player.y)
         context.rect(player.x, player.y, 80, 60);
         context.fill();
-
         context.fillStyle = player.color;
         context.lineWidth = 5;
         context.strokeStyle = player.color;
@@ -139,6 +134,16 @@ socket.on('state', function(players){
             context.fill();
             context.fillStyle = player.color;
             console.log("BOOM");
+
+            for (var id2 in players) {
+                var pl2 = players[id2];
+                console.log(pl2.name);
+                if(player != pl2 && player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
+                    socket.emit('hit', id);
+                    socket.emit('got_hit', id2);
+                    console.log("HELp")
+                }
+            }
         }
         
         movement.shooting = false;
