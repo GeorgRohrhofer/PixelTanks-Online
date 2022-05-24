@@ -146,8 +146,9 @@ io.on('connection', function(socket){
 
     io.on('hit', function(pl2){
         var player = players[socket.id] || {};
+        console.log("Hallo aus vom hit");
         player.points += 1;
-        console.log(player.points);
+        console.log("Punkte:" + player.points);
     })
 
     io.on('got_hit', function(){
