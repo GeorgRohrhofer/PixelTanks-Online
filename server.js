@@ -7,13 +7,16 @@ var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
 var playername = "";
-var cooldown = 0;
 
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
 
 app.get('/', function(request, response){
     response.sendFile(path.join(__dirname, 'lobby.html'));
+})
+
+app.get('/:name', function(request, response){
+    response.sendFile(path.join(__dirname, request.params.name));
 })
 
 
@@ -41,33 +44,43 @@ io.on('connection', function(socket){
         switch(result){
             case 0:
                 col = 'darkgreen';
+                image = 'tank_green.gif'
                 break;
             case 1:
                 col = 'white';
+                image = 'tank_white.gif';
                 break;
             case 2:
                 col = 'beige';
+                image = 'tank_yellow.gif';
                 break;
             case 3:
                 col = 'darkblue';
+                image = 'tank_blue.gif';
                 break;   
             case 4:
-                col = 'blue';
+                col = 'darkviolet';
+                image = 'tank_violett.gif';
                 break;
             case 5:
                 col = 'lightblue';
+                image = 'tank_lightblue.gif';
                 break;
             case 6:
                 col = 'red';
+                image = 'tank_red.gif';
                 break;
             case 7:
                 col = 'pink';
+                image = 'tank_pink.gif';
                 break; 
             case 8:
-                col = 'black';
+                col = 'orange';
+                image = 'tank_orange.gif';
                 break;
             case 9:
                 col = 'grey';
+                image = 'tank_grey.gif';
                 break;
         }
 
@@ -80,11 +93,13 @@ io.on('connection', function(socket){
             canony: 300,
             fire: false,
             points : 0,
-            image: "tank_red.png"
+            image: image,
+            cooldown : 0
         };
     });
     socket.on('movement', function(data){
         var player = players[socket.id] || {};
+        player.cooldown -=1;
         if(data.left){
             if(player.x > 0)
                 player.x -= 5;
@@ -116,7 +131,10 @@ io.on('connection', function(socket){
         }
 
         if(data.shooting == true){
-            player.fire = true;
+            if(player.cooldown < 1){
+                player.fire = true;
+                player.cooldown = 60;
+            }
         }
         if(data.shooting == false){
             player.fire = false;
@@ -126,14 +144,15 @@ io.on('connection', function(socket){
         delete players[socket.id];
     });
 
-    io.on('hit', function(playerid){
-        players[playerid].points += 1;
-        console.log(players[playerid].points);
+    io.on('hit', function(pl2){
+        var player = players[socket.id] || {};
+        player.points += 1;
+        console.log(player.points);
     })
 
-    io.on('got_hit', function(playerid){
-        players[playerid].points = 0;
-        console.log(players[playerid].points);
+    io.on('got_hit', function(){
+        var player = players[socket.id] || {};
+        player.points = 0;
     })
 });
 

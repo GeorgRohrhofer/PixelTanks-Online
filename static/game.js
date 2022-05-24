@@ -3,6 +3,9 @@ socket.on('message', function(data){
     console.log(data);
 });
 
+var imageLoaded = false;
+var img = new Image();
+
 var movement = {
     up: false,
     down: false,
@@ -19,6 +22,10 @@ var cr = 'rgb('+
       Math.floor(Math.random()*256)+','+
       Math.floor(Math.random()*256)+','+
       Math.floor(Math.random()*256)+')';
+
+function LoadImage(src){
+    img.src = src
+}
 
 document.addEventListener('close', function(event){
     socket.emit('disconnect');
@@ -100,6 +107,7 @@ canvas.height = 1080;
 var context = canvas.getContext('2d');
 
 socket.on('state', function(players){
+
     var div = document.getElementById('Leaderboard');
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
@@ -109,10 +117,11 @@ socket.on('state', function(players){
 
     for (var id in players) {
         var player = players[id];
+        LoadImage("../" + player.image)
         context.fillStyle = player.color;
         context.beginPath();
-        //context.drawImage(player.image, player.x, player.y)
-        context.rect(player.x, player.y, 80, 60);
+        context.drawImage(img, player.x, player.y, 80,60);
+        //context.rect(player.x, player.y, 80, 60);
         context.fill();
         context.fillStyle = player.color;
         context.lineWidth = 5;
@@ -138,10 +147,9 @@ socket.on('state', function(players){
             for (var id2 in players) {
                 var pl2 = players[id2];
                 console.log(pl2.name);
-                if(player != pl2 && player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
-                    socket.emit('hit', id);
-                    socket.emit('got_hit', id2);
-                    console.log("HELp")
+                if(player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
+                    socket.emit('hit', pl2);
+                    console.log("HELp");
                 }
             }
         }
