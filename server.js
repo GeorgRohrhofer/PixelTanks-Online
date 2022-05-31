@@ -102,32 +102,32 @@ io.on('connection', function(socket){
         player.cooldown -=1;
         if(data.left){
             if(player.x > 0)
-                player.x -= 5;
+                player.x -= 7;
         }
         if(data.up){
             if(player.y > 0)
-                player.y -= 5;
+                player.y -= 7;
         }
         if(data.right){
             if(player.x < 1840)
-                player.x += 5;
+                player.x += 7;
         }
         if(data.down){
             if(player.y < 1020)
-                player.y += 5;
+                player.y += 7;
         }
 
         if(data.canonleft){
-            player.canonx -= 5;
+            player.canonx -= 12;
         }
         if(data.canonup){
-            player.canony -= 5;
+            player.canony -= 12;
         }
         if(data.canonright){
-            player.canonx += 5;
+            player.canonx += 12;
         }
         if(data.canondown){
-            player.canony += 5;
+            player.canony += 12;
         }
 
         if(data.shooting == true){
@@ -141,7 +141,8 @@ io.on('connection', function(socket){
         }
     });
     io.on('disconnect', function(){
-        delete players[socket.id];
+        console.log("player deleted");
+        players[socket.id] = null;
     });
 
     io.on('hit', function(pl2){

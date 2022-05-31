@@ -27,10 +27,6 @@ function LoadImage(src){
     img.src = src
 }
 
-document.addEventListener('close', function(event){
-    socket.emit('disconnect');
-});
-
 document.addEventListener('keydown', function(event){
     //console.log(event.key);
     switch(event.key){
@@ -63,6 +59,10 @@ document.addEventListener('keydown', function(event){
             break;
     }
 });
+
+$(window).on("beforeunload", function() { 
+    socket.emit("disconnect");
+})
 
 document.addEventListener('keyup', function(event){
     switch(event.key){
@@ -97,6 +97,7 @@ document.addEventListener('keyup', function(event){
 });
 
 socket.emit('new player');
+
 setInterval(function() {
   socket.emit('movement', movement);
 }, 1000 / 60);
@@ -119,21 +120,37 @@ socket.on('state', function(players){
         var player = players[id];
         LoadImage("../" + player.image)
         context.fillStyle = player.color;
+
+        //Fallback if Tanks are unable to Load
+        context.beginPath();
+        context.rect(player.x, player.y, 80, 60);
+        context.fill();
+
         context.beginPath();
         context.drawImage(img, player.x, player.y, 80,60);
-        //context.rect(player.x, player.y, 80, 60);
         context.fill();
         context.fillStyle = player.color;
         context.lineWidth = 5;
         context.strokeStyle = player.color;
+
+        //crosshair
         context.beginPath();
         context.arc(player.canonx, player.canony, 50, 0, 2*Math.PI);
         context.stroke();
+
         context.beginPath();
-        context.rect(player.canonx - 5, player.canony + 40, 10, 10);
-        context.rect(player.canonx - 5, player.canony - 50, 10, 10);
-        context.rect(player.canonx + 40, player.canony -5, 10, 10);
-        context.rect(player.canonx - 50, player.canony -5, 10, 10);
+        context.arc(player.canonx, player.canony, 40, 0, 2*Math.PI);
+        context.stroke();
+
+        context.beginPath();
+        context.rect(player.canonx - 3, player.canony + 30, 6, 30);
+        context.rect(player.canonx - 3, player.canony - 60, 6, 30);
+        context.rect(player.canonx + 30, player.canony -3, 30, 6);
+        context.rect(player.canonx - 60, player.canony -3, 30, 6);
+        context.fill();
+
+        context.beginPath();
+        context.arc(player.canonx, player.canony, 5, 0, 2*Math.PI);
         context.fill();
 
         context.beginPath();
