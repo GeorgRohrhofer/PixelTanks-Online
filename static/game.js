@@ -167,6 +167,7 @@ socket.on('state', function(players){
                 if(player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
                     socket.emit('hit', pl2);
                     console.log("HELp");
+                    
                 }
             }
         }
