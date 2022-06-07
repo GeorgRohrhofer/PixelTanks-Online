@@ -41,6 +41,8 @@ var players = {};
 io.on('connection', function(socket){
     socket.on('new player', function(){
         result = Math.floor(Math.random()*10);
+        image = 'tank_green.gif';
+        col = 'green';
         switch(result){
             case 0:
                 col = 'darkgreen';
@@ -140,22 +142,22 @@ io.on('connection', function(socket){
             player.fire = false;
         }
     });
-    io.on('disconnect', function(){
+    socket.on('my_disconnect', function(){
         console.log("player deleted");
-        players[socket.id] = null;
+        //players[socket.id] = null;
     });
 
-    io.on('hit', function(pl2){
+    socket.on('hit', function(){
         var player = players[socket.id] || {};
         console.log("Hallo aus vom hit");
         player.points += 1;
         console.log("Punkte:" + player.points);
     })
 
-    io.on('got_hit', function(){
-        var player = players[socket.id] || {};
+    socket.on('got_hit', function(id){
+        var player = players[id] || {};
         player.points = 0;
-    })
+    });
 });
 
 

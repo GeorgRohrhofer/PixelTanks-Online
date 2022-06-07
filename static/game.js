@@ -61,7 +61,7 @@ document.addEventListener('keydown', function(event){
 });
 
 $(window).on("beforeunload", function() { 
-    socket.emit("disconnect");
+    socket.emit("my_disconnect");
 })
 
 document.addEventListener('keyup', function(event){
@@ -113,12 +113,14 @@ socket.on('state', function(players){
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
 
-    [].slice.call(players).sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+    var player_array = [].slice.call(players).sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
 
+    console.log(player_array.length);
 
-    for (var id in players) {
-        var player = players[id];
-        LoadImage("../" + player.image)
+    for (var id in player_array) {
+        console.log("player");
+        var player = player_array[id];
+        
         context.fillStyle = player.color;
 
         //Fallback if Tanks are unable to Load
@@ -127,7 +129,11 @@ socket.on('state', function(players){
         context.fill();
 
         context.beginPath();
-        context.drawImage(img, player.x, player.y, 80,60);
+        if(player.image != null){
+            LoadImage("../" + player.image)
+            context.drawImage(img, player.x, player.y, 80,60);
+        }
+            
         context.fill();
         context.fillStyle = player.color;
         context.lineWidth = 5;
@@ -161,13 +167,13 @@ socket.on('state', function(players){
             context.fillStyle = player.color;
             console.log("BOOM");
 
-            for (var id2 in players) {
-                var pl2 = players[id2];
+            for (var id2 in player_array) {
+                var pl2 = player_array[id2];
                 console.log(pl2.name);
                 if(player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
-                    socket.emit('hit', pl2);
+                    socket.emit('hit');
                     console.log("HELp");
-                    
+                    socket.emit('got_hit', id2);
                 }
             }
         }
