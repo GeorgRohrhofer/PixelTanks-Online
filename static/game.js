@@ -113,13 +113,13 @@ socket.on('state', function(players){
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
 
-    var player_array = [].slice.call(players).sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+    //var player_array = [].slice.call(players).sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
 
-    console.log(player_array.length);
+    //console.log(players.length);
 
-    for (var id in player_array) {
-        console.log("player");
-        var player = player_array[id];
+    for (var id in players) {
+        //console.log("player");
+        var player = players[id];
         
         context.fillStyle = player.color;
 
