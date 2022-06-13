@@ -167,8 +167,8 @@ socket.on('state', function(players){
             context.fillStyle = player.color;
             console.log("BOOM");
 
-            for (var id2 in player_array) {
-                var pl2 = player_array[id2];
+            for (var id2 in players) {
+                var pl2 = players[id2];
                 console.log(pl2.name);
                 if(player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
                     socket.emit('hit');
