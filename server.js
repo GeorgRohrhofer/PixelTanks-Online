@@ -101,6 +101,7 @@ io.on('connection', function(socket){
     });
     socket.on('movement', function(data){
         var player = players[socket.id] || {};
+
         player.cooldown -=1;
         if(data.left){
             if(player.x > 0)

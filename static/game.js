@@ -175,7 +175,7 @@ socket.on('state', function(players){
                 console.log(pl2.name);
                 if(player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
                     socket.emit('hit');
-                    console.log("HELp");
+                    console.log("Getroffen");
                     socket.emit('got_hit', id2);
                 }
             }
@@ -187,7 +187,10 @@ socket.on('state', function(players){
         context.font = "20px Georgia";
         context.fillText(player.name, player.x, player.y+80);
 
-                    
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(player.name + " - " + player.points));
+
+        div.appendChild(li);           
     }
     /*
     console.log(players);
