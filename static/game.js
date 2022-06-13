@@ -108,12 +108,15 @@ canvas.height = 1080;
 var context = canvas.getContext('2d');
 
 socket.on('state', function(players){
-
     var div = document.getElementById('Leaderboard');
     div.innerHTML = '';
     context.clearRect(0, 0, 1920, 1080);
 
     //var player_array = [].slice.call(players).sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+
+    //var resultArray = $.map(players, function(value, index) { return [value]; });
+    //resultArray.sort().reverse();
+    //console.log(resultArray);
 
     //console.log(players.length);
 
@@ -172,7 +175,7 @@ socket.on('state', function(players){
                 console.log(pl2.name);
                 if(player.canonx > pl2.x && player.canonx < pl2.x+80 && player.canony > pl2.y && player.canony < pl2.y+60){
                     socket.emit('hit');
-                    console.log("HELp");
+                    console.log("Getroffen");
                     socket.emit('got_hit', id2);
                 }
             }
@@ -187,7 +190,20 @@ socket.on('state', function(players){
         var li = document.createElement('li');
         li.appendChild(document.createTextNode(player.name + " - " + player.points));
 
-        div.appendChild(li);
-                    
+        div.appendChild(li);           
     }
+    /*
+    console.log(players);
+
+    var resultArray = players || {};
+    resultArray.sort((a, b) => (parseFloat(a.points) > parseFloat(b.points)));
+
+    for (var id in resultArray) {
+        var player = resultArray[id];
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(player.name + " - " + player.points));
+
+        div.appendChild(li);
+    }
+    */
 });
