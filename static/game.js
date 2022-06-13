@@ -61,7 +61,7 @@ document.addEventListener('keydown', function(event){
 });
 
 $(window).on("beforeunload", function() { 
-    socket.emit("my_disconnect");
+    socket.emit("disconnect");
 })
 
 document.addEventListener('keyup', function(event){

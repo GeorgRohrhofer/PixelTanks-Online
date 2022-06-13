@@ -38,6 +38,13 @@ setInterval(function(){
 */
 
 var players = {};
+
+function between(min, max) {  
+    return Math.floor(
+      Math.random() * (max - min) + min
+    )
+  }
+
 io.on('connection', function(socket){
     socket.on('new player', function(){
         result = Math.floor(Math.random()*10);
@@ -86,13 +93,16 @@ io.on('connection', function(socket){
                 break;
         }
 
+        var cordx = between(0, 1840);
+        var cordy = between(0, 1020);
+
         players[socket.id] = {
-            x : 300,
-            y : 300,
+            x : cordx,
+            y : cordy,
             color: col,
             name: playername,
-            canonx: 300,
-            canony: 300,
+            canonx: cordx,
+            canony: cordy,
             fire: false,
             points : 0,
             image: image,
@@ -143,9 +153,11 @@ io.on('connection', function(socket){
             player.fire = false;
         }
     });
-    socket.on('my_disconnect', function(){
+    socket.on('disconnect', function(){
         console.log("player deleted");
+        var tempplayers = players.filter(function(x){return x.id==socket.id});
         //players[socket.id] = null;
+        players = tempplayers;
     });
 
     socket.on('hit', function(){
