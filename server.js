@@ -155,9 +155,9 @@ io.on('connection', function(socket){
     });
     socket.on('disconnect', function(){
         console.log("player deleted");
-        var tempplayers = players.filter(function(x){return x.id==socket.id});
+        //var tempplayers = players.filter(function(x){return x.id==socket.id});
         //players[socket.id] = null;
-        players = tempplayers;
+        delete players[socket.id];
     });
 
     socket.on('hit', function(){
