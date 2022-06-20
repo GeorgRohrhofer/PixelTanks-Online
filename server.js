@@ -111,47 +111,59 @@ io.on('connection', function(socket){
     });
     socket.on('movement', function(data){
         var player = players[socket.id] || {};
-
-        player.cooldown -=1;
-        if(data.left){
-            if(player.x > 0)
-                player.x -= 7;
-        }
-        if(data.up){
-            if(player.y > 0)
-                player.y -= 7;
-        }
-        if(data.right){
-            if(player.x < 1840)
-                player.x += 7;
-        }
-        if(data.down){
-            if(player.y < 1020)
-                player.y += 7;
-        }
-
-        if(data.canonleft){
-            player.canonx -= 12;
-        }
-        if(data.canonup){
-            player.canony -= 12;
-        }
-        if(data.canonright){
-            player.canonx += 12;
-        }
-        if(data.canondown){
-            player.canony += 12;
-        }
-
-        if(data.shooting == true){
-            if(player.cooldown < 1){
-                player.fire = true;
-                player.cooldown = 60;
+        var moving_allowed = true;
+        for (var id2 in players) {
+            var pl2 = players[id2];
+            //if(x < (player.x + Point.SIZE )&& x > (p.p1.x - Point.SIZE) && y < (p.p1.y + Point.SIZE) && y > (p.p1.y - Point.SIZE)))
+            if(player.x > pl2.x && player.x < pl2.x+80 && player.y > pl2.y && player.y < pl2.y+60){
+                console.log("intersecting")
+                moving_allowed = false;
             }
         }
-        if(data.shooting == false){
-            player.fire = false;
-        }
+
+        player.cooldown -=1;
+        if(moving_allowed)
+        {
+            if(data.left){
+                if(player.x > 0)
+                    player.x -= 7;
+            }
+            if(data.up){
+                if(player.y > 0)
+                    player.y -= 7;
+            }
+            if(data.right){
+                if(player.x < 1840)
+                    player.x += 7;
+            }
+            if(data.down){
+                if(player.y < 1020)
+                    player.y += 7;
+            }
+    
+            if(data.canonleft){
+                player.canonx -= 12;
+            }
+            if(data.canonup){
+                player.canony -= 12;
+            }
+            if(data.canonright){
+                player.canonx += 12;
+            }
+            if(data.canondown){
+                player.canony += 12;
+            }
+    
+            if(data.shooting == true){
+                if(player.cooldown < 1){
+                    player.fire = true;
+                    player.cooldown = 60;
+                }
+            }
+            if(data.shooting == false){
+                player.fire = false;
+            }
+        }        
     });
     socket.on('disconnect', function(){
         console.log("player deleted");
