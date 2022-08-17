@@ -12,7 +12,7 @@ https://github.com/GeorgRohrhofer
 https://github.com/Schock1
 ```
 ______
-# Manuel:
+# Manual:
 ## Concept:
 It's all about scoring the most points. You can score points by hitting the opponent tank with your canon.
 
